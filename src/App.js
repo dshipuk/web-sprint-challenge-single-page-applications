@@ -46,7 +46,7 @@ const App = () => {
         data[toppings[i].name] = checkedState[i]
       }
     }
-    axios.post("https://reqres.in/api/orders", data)
+    axios.post("https://reqres.in/api/orders/", data)
       .then(res => {
         console.log(res.data)
       })
