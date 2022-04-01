@@ -20,12 +20,12 @@ const initialFormErrors = {
   name: ""
 }
 
+const initialCheckboxes = new Array(toppings.length).fill(false)
+
 const App = () => {
   const [values, setValues] = useState(initialPizzaForm);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
-  const [checkedState, setChecked] = useState(
-    new Array(toppings.length).fill(false)
-  )
+  const [checkedState, setChecked] = useState(initialCheckboxes)
 
   const validate = (name, value) => {
     yup.reach(pizzaValidation, name)
@@ -51,6 +51,7 @@ const App = () => {
         console.log(res.data)
       })
       .catch(err => console.error(err))
+      .finally(setValues(initialPizzaForm), setChecked(initialCheckboxes))
   }
 
   const checkHandler = (position) => {
