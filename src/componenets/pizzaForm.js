@@ -3,7 +3,7 @@ import { toppings } from '../utils/toppings';
 
 const pizzaForm = (props) => {
     const { change, submit, errors, onChecked, check } = props
-    const { clientname, specialtext } = props.cmpnts
+    const { name, special, size } = props.cmpnts
 
 
     const onChange = (evt) => {
@@ -18,22 +18,24 @@ const pizzaForm = (props) => {
 
     return (
         <div>
-            <form id="pizza-form">
+            <form id="pizza-form" onSubmit={onSubmit}>
                 <div>Build Your Pizza</div>
                 <div className='errors'>
-                    <p>{errors.clientname}</p>
+                    <p>{errors.name}</p>
+                    <p>{errors.sizes}</p>
                 </div>
                 <label>Name
                     <input 
                         id="name-input"
                         type="text"
-                        name="clientname"
-                        value={clientname}
+                        name="name"
+                        value={name}
                         onChange={onChange}                      
                     />
                 </label>
                 <label>Size
-                    <select id="size-dropdown">
+                    <select id="size-dropdown" name="size" value={size} onChange={onChange}>
+                        <option value="">Select a Size</option>
                         <option value="small">small</option>
                         <option value="medium">medium</option>
                         <option value="large">large</option>
@@ -62,12 +64,12 @@ const pizzaForm = (props) => {
                     <input 
                         id='special-text'
                         type="text"
-                        name="specialtext"
-                        value={specialtext}
+                        name="special"
+                        value={special}
                         onChange={onChange}
                     />
                 </label>
-                
+                <input type="submit" value="Create Order" id="order-button" />
             </form>
         </div>
     )

@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import Home from "./componenets/homeForm";
 import Pizza from "./componenets/pizzaForm";
 import * as yup from 'yup';
+import axios from "axios";
 
 // Validation
 import pizzaValidation from "./validation/pizzaScheme";
@@ -11,11 +12,12 @@ import pizzaValidation from "./validation/pizzaScheme";
 import { toppings } from "./utils/toppings";
 
 const initialPizzaForm = {
-  clientname: "",
-  specialtext: ""
+  name: "",
+  size: "",
+  special: ""
 }
 const initialFormErrors = {
-  clientname: ""
+  name: ""
 }
 
 const App = () => {
@@ -38,7 +40,17 @@ const App = () => {
   }
 
   const sbmt = () => {
-
+    let data = Object.assign({}, values)
+    for (let i = 0; i < checkedState.length; i++) {
+      if (checkedState[i] === true){
+        data[toppings[i].name] = checkedState[i]
+      }
+    }
+    axios.post("https://reqres.in/api/orders", data)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => console.error(err))
   }
 
   const checkHandler = (position) => {

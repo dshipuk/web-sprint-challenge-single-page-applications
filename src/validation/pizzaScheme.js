@@ -1,11 +1,14 @@
 import * as yup from 'yup'
 
 const pizzaScheme = yup.object().shape({
-    clientname: yup
+    name: yup
     .string()
     .required("Name Required")
     .min(2, "name must be at least 2 characters"),
-    specialtext: yup
+    size: yup
+    .string()
+    .required("Please Select a Size"),
+    special: yup
     .string()
     .notRequired()
 })
