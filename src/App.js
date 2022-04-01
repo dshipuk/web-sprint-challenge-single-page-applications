@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Route } from 'react-router-dom';
+import { Route } from "react-router-dom";
 import Home from "./componenets/homeForm";
 import Pizza from "./componenets/pizzaForm";
-import * as yup from 'yup';
+import * as yup from "yup";
 import axios from "axios";
 
 // Validation
@@ -14,51 +14,54 @@ import { toppings } from "./utils/toppings";
 const initialPizzaForm = {
   name: "",
   size: "",
-  special: ""
-}
+  special: "",
+};
 const initialFormErrors = {
-  name: ""
-}
+  name: "",
+};
 
-const initialCheckboxes = new Array(toppings.length).fill(false)
+const initialCheckboxes = new Array(toppings.length).fill(false);
 
 const App = () => {
   const [values, setValues] = useState(initialPizzaForm);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
-  const [checkedState, setChecked] = useState(initialCheckboxes)
+  const [checkedState, setChecked] = useState(initialCheckboxes);
 
   const validate = (name, value) => {
-    yup.reach(pizzaValidation, name)
+    yup
+      .reach(pizzaValidation, name)
       .validate(value)
-      .then(() => setFormErrors({ ...formErrors, [name]: ""}))
-      .catch(err => setFormErrors({ ...formErrors, [name]: err.errors[0] }))
-  }
+      .then(() => setFormErrors({ ...formErrors, [name]: "" }))
+      .catch((err) => setFormErrors({ ...formErrors, [name]: err.errors[0] }));
+  };
 
   const chng = (name, value) => {
     validate(name, value);
-    setValues({ ...values, [name]: value })
-  }
+    setValues({ ...values, [name]: value });
+  };
 
   const sbmt = () => {
-    let data = Object.assign({}, values)
+    let data = Object.assign({}, values);
     for (let i = 0; i < checkedState.length; i++) {
-      if (checkedState[i] === true){
-        data[toppings[i].name] = checkedState[i]
+      if (checkedState[i] === true) {
+        data[toppings[i].name] = checkedState[i];
       }
     }
-    axios.post("https://reqres.in/api/orders/", data)
-      .then(res => {
-        console.log(res.data)
+    axios
+      .post("https://reqres.in/api/orders/", data)
+      .then((res) => {
+        console.log(res.data);
       })
-      .catch(err => console.error(err))
-      .finally(setValues(initialPizzaForm), setChecked(initialCheckboxes))
-  }
+      .catch((err) => console.error(err))
+      .finally(setValues(initialPizzaForm), setChecked(initialCheckboxes));
+  };
 
   const checkHandler = (position) => {
-    const updatedCheckedState = checkedState.map((item, index) => index === position ? !item : item);
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
     setChecked(updatedCheckedState);
-  }
-
+  };
 
   return (
     <div>
@@ -66,7 +69,7 @@ const App = () => {
         <Home />
       </Route>
       <Route exact path="/pizza">
-        <Pizza 
+        <Pizza
           cmpnts={values}
           change={chng}
           submit={sbmt}
